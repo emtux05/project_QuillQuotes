@@ -1,6 +1,7 @@
 "use client";
 
 import Form from '@components/Form';
+import RequireAuthentication from '@utils/auth';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
@@ -9,7 +10,8 @@ import { useState } from 'react'
 const CreatePrompt = () => {
 
     const router = useRouter();
-    const {data: session} = useSession();
+    const {data: session, status} = useSession();
+    console.log("status", status, session)
 
     const [submitting, setSubmitting] = useState(false)
     const [post, setPost] = useState({
@@ -35,13 +37,15 @@ const CreatePrompt = () => {
                     router.push('/');
                 }
         } catch (err) {
-            console.log("errrrrr", err);
+            console.log(err);
         } finally {
             setSubmitting(false)
         }
     }
 
   return (
+    <>
+    <RequireAuthentication router={router}>
     <Form
         type="Create"
         post={post}
@@ -49,6 +53,8 @@ const CreatePrompt = () => {
         submitting= {submitting}
         handleSubmit= {createPrompt}
     />
+    </RequireAuthentication>
+    </>
   )
 }
 

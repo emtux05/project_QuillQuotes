@@ -1,7 +1,7 @@
 "use client";
 
 import Form from '@components/Form';
-// import { useSession } from 'next-auth/react';
+import RequireAuthentication from '@utils/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
 
@@ -9,10 +9,8 @@ import { useEffect, useState } from 'react'
 const EditPrompt = () => {
 
     const router = useRouter();
-    // const {data: session} = useSession();
     const searchParams = useSearchParams();
     const promptId = searchParams.get('id') 
-    console.log("promptId",promptId)
 
     const [submitting, setSubmitting] = useState(false)
     const [post, setPost] = useState({
@@ -59,6 +57,8 @@ const EditPrompt = () => {
     }
 
   return (
+    <>
+    <RequireAuthentication>
     <Form
         type="Edit"
         post={post}
@@ -66,6 +66,8 @@ const EditPrompt = () => {
         submitting= {submitting}
         handleSubmit= {updatePrompt}
     />
+     </RequireAuthentication>
+    </>
   )
 }
 

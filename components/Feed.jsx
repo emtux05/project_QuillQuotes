@@ -1,6 +1,4 @@
 "use client"
-
-
 import { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
 
@@ -19,12 +17,38 @@ const PromptCardList = ({data, handleTagClick}) => {
 }
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState('');
   const [posts, setPosts] = useState([])
+  const [searchText, setSearchText] = useState('');
+  const [searchTimeout, setSearchTimeout] = useState(null)
+  const [searchedResults, setSearchResults] = useState([])
 
-  //implement search feature here 
+  const handleSearchChange = (e) => {
+    clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
 
-  const handleSearchChange = () => {}
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompts(e.target.value);
+        setSearchResults(searchResult);
+      }, 500)
+    )
+  }
+
+  const filterPrompts = (searchtext) => {
+    const regex = new RegExp(searchtext,'i') // 'i' flag for case-insensitive search
+    return posts.filter(
+      (item) => 
+        regex.test(item.creator.username) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+    )
+  }
+
+  const handleTagClick = (tagName) => {
+    setSearchText(tagName);
+    const searchResult = filterPrompts(tagName);
+    setSearchResults(searchResult);
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -34,7 +58,7 @@ const Feed = () => {
       setPosts(data);
     }
     fetchPosts();
-  })
+  },[])
 
   return (
     <section className='feed'>
@@ -48,11 +72,17 @@ const Feed = () => {
           className='search_input peer'
         />
       </form>
-      
-      <PromptCardList 
+      {searchText ? (
+        <PromptCardList 
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
+      ) : (
+        <PromptCardList 
         data= {posts}
-        handleTagClick={() => {}}
-      />
+        handleTagClick={handleTagClick}
+        />
+      )}
     </section>
   )
 }
