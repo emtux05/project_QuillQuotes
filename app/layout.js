@@ -4,8 +4,8 @@ import '@styles/global.css';
 
 
 export const metadata = {
-    title: 'Promtopia',
-    description: 'Discover and share AI prompt'
+    title: 'QuillQuotes',
+    description: 'Discover and share your Quotes'
 }
 
 const RootLayout = ({children}) => {
