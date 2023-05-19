@@ -91,17 +91,17 @@ const Nav = () => {
               <div className="dropdown">
                 <Link 
                   href="/profile"
-                  className="dropdown_link"
+                  className="dropdown_link outline_btn w-full"
                   onClick={() => setToggleDropDown(false)}
                 >
                   My Profile
                 </Link>
                 <Link 
-                  href="/profile"
-                  className="dropdown_link"
+                  href="/create-prompt"
+                  className="dropdown_link outline_btn w-full"
                   onClick={() => setToggleDropDown(false)}
                 >
-                  Create Prompt
+                  Create Post
                 </Link>
                 <button
                   type="button"
@@ -109,7 +109,7 @@ const Nav = () => {
                     setToggleDropDown(false);
                     signOut(false);
                   }}
-                  className="mt-5 w-full black_btn"
+                  className="mt-2 w-full black_btn"
                 >
                   Sign Out
                 </button>
